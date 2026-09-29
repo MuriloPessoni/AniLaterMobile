@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, Image, ActivityIndicator, Alert, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, Image, ActivityIndicator, Alert, Keyboard, Platform} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { buscarAnimes, mensagemErro } from '../services/api';
 import { styles, colors } from '../styles';
+import { View, Text, TextInput, TouchableOpacity, FlatList, Image, ActivityIndicator, Alert, Keyboard, Platform } from 'react-native';
 
 const status = { FINISHED: 'Finalizado', RELEASING: 'Em lançamento', NOT_YET_RELEASED: 'Ainda não lançado', CANCELLED: 'Cancelado', HIATUS: 'Pausado' };
 export default function Main({ navigation }) {
@@ -50,14 +51,35 @@ export default function Main({ navigation }) {
     finally { setCarregando(false); }
   };
 
-  const excluir = item => Alert.alert('Excluir card', `Remover ${item.title.english || item.title.romaji}?`, [
-    { text: 'Cancelar', style: 'cancel' },
-    { text: 'Excluir', style: 'destructive', onPress: async () => {
+  const excluir = (item) => {
+    const remover = async () => {
       const novos = animes.filter(anime => anime.id !== item.id);
-      try { await AsyncStorage.setItem('animes', JSON.stringify(novos)); setAnimes(novos); }
-      catch (error) { Alert.alert('Erro', 'Não foi possível excluir o card.'); }
-    } },
-  ]);
+
+      try {
+        await AsyncStorage.setItem('animes', JSON.stringify(novos));
+        setAnimes(novos);
+      } catch (error) {
+        if (Platform.OS === 'web') {
+          window.alert('Não foi possível excluir o card.');
+        } else {
+          Alert.alert('Erro', 'Não foi possível excluir o card.');
+        }
+      }
+    };
+
+    const mensagem = `Remover ${item.title.english || item.title.romaji}?`;
+
+    if (Platform.OS === 'web') {
+      if (window.confirm(mensagem)) {
+        remover();
+      }
+    } else {
+      Alert.alert('Excluir card', mensagem, [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Excluir', style: 'destructive', onPress: remover },
+      ]);
+    }
+  };
 
   const topo = <View style={styles.content}>
     <Text style={styles.title}>Descubra animes</Text>
