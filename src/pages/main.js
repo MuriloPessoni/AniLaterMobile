@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, Image, ActivityIndicator, Alert, Keyboard, Platform} from 'react-native';
+
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  ActivityIndicator,
+  Alert,
+  Keyboard,
+  Platform,
+} from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { buscarAnimes, mensagemErro } from '../services/api';
 import { styles, colors } from '../styles';
-import { View, Text, TextInput, TouchableOpacity, FlatList, Image, ActivityIndicator, Alert, Keyboard, Platform } from 'react-native';
 
 const status = { FINISHED: 'Finalizado', RELEASING: 'Em lançamento', NOT_YET_RELEASED: 'Ainda não lançado', CANCELLED: 'Cancelado', HIATUS: 'Pausado' };
 export default function Main({ navigation }) {
@@ -93,7 +105,7 @@ export default function Main({ navigation }) {
     {animes.length === 0 && <Text style={styles.subtitle}>Nenhum card ainda. Pesquise um anime acima.</Text>}
   </View>;
 
-  return <FlatList style={styles.screen} data={animes} keyExtractor={item => String(item.id)} ListHeaderComponent={topo} contentContainerStyle={{ paddingBottom: 30 }} keyboardShouldPersistTaps="handled" renderItem={({ item }) => <View style={[styles.card, { marginHorizontal: 20 }]}>
+  return <FlatList style={[styles.screen, { flexBasis: 0, minHeight: 0 }]} showsVerticalScrollIndicator={true} data={animes} keyExtractor={item => String(item.id)} ListHeaderComponent={topo} contentContainerStyle={{ paddingBottom: 30 }} keyboardShouldPersistTaps="handled" renderItem={({ item }) => <View style={[styles.card, { marginHorizontal: 20 }]}>
     <View style={styles.cardRow}>
       {item.coverImage?.large ? <Image style={styles.cover} source={{ uri: item.coverImage.large }} /> : <View style={styles.cover} />}
       <View style={styles.cardInfo}>
