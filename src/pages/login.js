@@ -72,8 +72,6 @@ export default function Login({ navigation }) {
 
       await AsyncStorage.setItem('sessao', conta.email);
 
-        avisar('Teste', 'Login validado. Vou abrir a tela principal.');
-
         setSenha('');
         navigation.replace('main');
     } catch (error) {

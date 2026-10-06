@@ -35,4 +35,4 @@ AniList GraphQL: `POST https://graphql.anilist.co`. A busca usa `Page(page, perP
 - `src/services/api.js`: consulta GraphQL via Axios.
 - `src/routes.js`: navegação entre as telas.
 
-**Observação:** este é um exercício com login local. AsyncStorage guarda dados sem criptografia; não utilize senha real. Há um cadastro por instalação do aplicativo. Ao cadastrar outra pessoa neste aparelho, o cadastro anterior é substituído. Os cards permanecem neste aparelho.
+**Observação:** este é um exercício com login local. AsyncStorage guarda dados sem criptografia; não utilize senha real. É possível cadastrar vários usuários no mesmo aparelho, e cada usuário possui sua própria lista de animes. Os dados permanecem salvos localmente e não são sincronizados entre navegador e celular.
